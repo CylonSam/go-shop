@@ -33,6 +33,7 @@ func GetAllProducts() []Product {
 			panic(err)
 		}
 
+		p.Id = id
 		p.Name = name
 		p.Description = description
 		p.Price = price
@@ -42,4 +43,31 @@ func GetAllProducts() []Product {
 	}
 	defer db.Close()
 	return products
+}
+
+func CreateNewProduct(name, description string, price float64, quantity int) {
+	db := db.ConnectToDB()
+
+	insertProductIntoDB, err := db.Prepare("insert into products(name, description, price, quantity) values ($1, $2, $3, $4)")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	insertProductIntoDB.Exec(name, description, price, quantity)
+
+	defer db.Close()
+}
+
+func DeleteProduct(id string) {
+	db := db.ConnectToDB()
+
+	deleteProduct, err := db.Prepare("delete from products where id=$1")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	deleteProduct.Exec(id)
+	defer db.Close()
 }
