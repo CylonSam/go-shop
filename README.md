@@ -20,7 +20,7 @@ Simple online shop simulation with Golang and html templates. Nothing too fancy!
 
     `git clone https://github.com/CylonSam/go-shop.git`
 
-2. Configure database (PostgresSQL)
+2. Configure database (PostgreSQL)
    
    You need to create a database and a user with access to it, then you have to fill the database information inside the variable `connection` in the `db/db.go` file.
   
