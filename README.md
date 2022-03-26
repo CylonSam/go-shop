@@ -13,7 +13,7 @@ Simple online shop simulation with Golang and html templates. Nothing too fancy!
 ### Prerequisites
 
 - [Go](https://go.dev/doc/install) (check installation guide in docs)
-- [PostgresSQL](https://www.postgresql.org/)
+- [PostgreSQL](https://www.postgresql.org/)
 
 ### Installation
 1. Clone repo
