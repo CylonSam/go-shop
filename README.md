@@ -6,7 +6,7 @@ Simple online shop simulation with Golang and html templates. Nothing too fancy!
 - Go
 - HTML
 - Bootstrap
-- PostgresSQL
+- PostgreSQL
 
 ## Getting started
 
