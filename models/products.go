@@ -1,6 +1,8 @@
 package models
 
-import "github.com/CylonSam/go-shop/db"
+import (
+	"github.com/CylonSam/go-shop/db"
+)
 
 type Product struct {
 	Id          int
@@ -13,7 +15,7 @@ type Product struct {
 func GetAllProducts() []Product {
 	db := db.ConnectToDB()
 
-	allProducts, err := db.Query("select * from products")
+	allProducts, err := db.Query("select * from products order by id asc")
 
 	if err != nil {
 		panic(err)
@@ -69,5 +71,53 @@ func DeleteProduct(id string) {
 	}
 
 	deleteProduct.Exec(id)
+	defer db.Close()
+}
+
+func GetProduct(id string) Product {
+	db := db.ConnectToDB()
+
+	productFromDB, err := db.Query("select * from products where id=$1", id)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	productToUpdate := Product{}
+
+	for productFromDB.Next() {
+		var id, quantity int
+		var name, description string
+		var price float64
+
+		err := productFromDB.Scan(&id, &name, &description, &price, &quantity)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		productToUpdate.Id = id
+		productToUpdate.Name = name
+		productToUpdate.Description = description
+		productToUpdate.Price = price
+		productToUpdate.Quantity = quantity
+
+	}
+	defer db.Close()
+
+	return productToUpdate
+}
+
+func UpdateProduct(id, quantity int, name, description string, price float64) {
+	db := db.ConnectToDB()
+
+	updateProduct, err := db.Prepare("update products set name=$1, description=$2, price=$3, quantity=$4 where id=$5")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	updateProduct.Exec(name, description, price, quantity, id)
+
 	defer db.Close()
 }
